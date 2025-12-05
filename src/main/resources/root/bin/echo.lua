@@ -1,11 +1,5 @@
 function execute(fileSystem, currentDir, arguments)
-    local str = ""
-
-    for i, arg in ipairs(arguments) do
-        str = str .. " " .. arg
-    end
-
-    print(str)
+    print(arguments)
 end
 
 function description()

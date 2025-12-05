@@ -159,4 +159,15 @@ public class VDirectory implements VNode, LuaDirectory {
 
         return path;
     }
+
+    @Override
+    public int getSize() {
+        int size = 0;
+
+        for(VNode node : getChildren()) {
+            size += node.getSize();
+        }
+
+        return size;
+    }
 }

@@ -1,6 +1,6 @@
-function execute(fileSystem, currentDir, arguments)
+function execute(system, currentDir, arguments)
     for i, node in ipairs(currentDir:getNodes()) do
-        print(node:getName());
+        print(node:getName() .. " | " .. system:getFormatedSize(node:getSize()));
     end
 end
 

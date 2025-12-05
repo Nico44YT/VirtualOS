@@ -37,4 +37,8 @@ public class VFile implements VNode, LuaFile {
     public String getData() {
         return data;
     }
+
+    public int getSize() {
+        return this.getData().getLength();
+    }
 }

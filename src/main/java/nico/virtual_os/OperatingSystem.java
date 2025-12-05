@@ -44,15 +44,15 @@ public class OperatingSystem implements LuaFileSystem {
                 LuaValue fileSystem = CoerceJavaToLua.coerce((LuaFileSystem)this);
                 LuaValue parentFolder = CoerceJavaToLua.coerce((LuaDirectory)currentDir);
 
-                LuaTable argumentTable = new LuaTable();
                 String[] argumentsArray = input.split(" ");
+                String arguments = "";
 
-                for (int i = 1; i < argumentsArray.length; i++) {
-                    argumentTable.set(i, argumentsArray[i]);
+                for(int i = 1;i<argumentsArray.length;i++) {
+                    arguments += argumentsArray[i];
                 }
 
                 try{
-                    executeFunction.call(fileSystem, parentFolder, argumentTable);
+                    executeFunction.call(fileSystem, parentFolder, arguments);
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -63,9 +63,8 @@ public class OperatingSystem implements LuaFileSystem {
     }
 
     @Override
-    public void changeDirectory(String[] path) {
-        if(path.length != 1) return;
-        String[] parts = path[0].split("/");
+    public void changeDirectory(String path) {
+        String[] parts = path.split("/");
 
         for(int i = 0;i<parts.length;i++) {
             var part = parts[i];
@@ -127,5 +126,46 @@ public class OperatingSystem implements LuaFileSystem {
     @Override
     public void reload() {
         BinCommands.loadDefaultCommands(rootDir);
+    }
+
+    public static enum FileSizes {
+        BYTES(0, "byte", "byte")
+        KILO_BYTE(1_000, "kilobyte", "kB"),
+        MEGA_BYTE(1_000_000, "megabyte", "mB");
+
+        private int size;
+        private String label;
+        private String shortLabel;
+        
+        FileSizes(int size, String label, String shortLabel) {
+            this.size = size;
+            this.label = label;
+            this.shortLabel = shortLabel;
+        }
+
+        public int getSize() {
+            return this.size;
+        }
+
+        public String getFullLabel() {
+            return this.label;
+        }
+
+        public String getShortLabel() {
+            return this.shortLabel;
+        }
+
+        public static FileSizes getSize(VNode node) {
+            int nodeSize = node.getSize();
+            FileSizes[] values = FileSizes.values();
+
+            for(int i = 0;i<values.length;i++) {
+                if(i == values.length-1) return values[i];
+
+                if(values[i].getSize() < nodeSize && nodeSize < values[i+1].getSize()) return values[i];
+            }
+
+            return FileSizes.BYTES;
+        }
     }
 }

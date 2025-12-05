@@ -4,4 +4,5 @@ public interface LuaNode {
     String getName();
     boolean isDirectory();
     boolean isFile();
+    int getSize();
 }
