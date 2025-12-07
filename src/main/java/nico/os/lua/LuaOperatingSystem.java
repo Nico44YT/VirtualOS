@@ -10,8 +10,10 @@ public interface LuaOperatingSystem {
     void print(String output);
     void clear();
     void sleep(int milliseconds);
+    void tone(int hz, int durationMs);
     LuaString awaitInput();
     LuaValue getFile(String path);
     LuaTable getFiles(String path);
     LuaTable getNodes(String path);
+    LuaString getVersion();
 }

@@ -44,6 +44,12 @@ public class SwingVirtualOS extends VirtualOperatingSystem {
 
             @Override
             public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_C && e.isControlDown()) {
+                    e.consume();
+                    interruptRunningProgram();
+                    return;
+                }
+
                 // block backspace + delete before inputStartOffset
                 if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE ||
                         e.getKeyCode() == KeyEvent.VK_DELETE) {
@@ -97,6 +103,16 @@ public class SwingVirtualOS extends VirtualOperatingSystem {
     }
 
     @Override
+    public void loop() {
+        print(this.getCurrentDirectory().toPath() + "> ");
+
+        String input = getInput();
+        print("\n");
+
+        processCommand(input);
+    }
+
+    @Override
     public void clear() {
         SwingUtilities.invokeLater(() -> {
             textArea.setText("");
@@ -129,37 +145,5 @@ public class SwingVirtualOS extends VirtualOperatingSystem {
 
     private static String getDataFromFile(File file) throws Exception {
         return Files.readString(file.toPath(), StandardCharsets.UTF_8);
-    }
-
-    @Override
-    public void init() {
-        loadDefaultFiles(getRootDirectory());
-
-        while (true) {
-            print(getCurrentDirectory().toPath() + "> ");
-            String input = getInput();
-            print("\n");
-            processCommand(input);
-        }
-    }
-
-    private void processCommand(String input) {
-        String[] parts = input.split(" ", 2);
-
-        getRootDirectory().getDirectory("bin/").ifPresentOrElse(binDir -> {
-
-            if (!parts[0].endsWith(".lua"))
-                parts[0] += ".lua";
-
-            binDir.getFile(parts[0]).ifPresentOrElse(luaFile -> {
-                String arguments = parts.length == 2 ? parts[1] : "";
-                executeLua(luaFile, arguments);
-            }, () -> {
-                if(parts[0].replace(".lua", "").isEmpty()) return;
-                print(String.format("The command \"%s\" couldn't be found.\n", parts[0].replace(".lua", "")));
-            });
-        }, () -> {
-
-        });
     }
 }
