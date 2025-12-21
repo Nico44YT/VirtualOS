@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ide-stubs" type="Lua">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/ide-stubs" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/ide-stubs" recursive="false" />
+  </library>
+</component>

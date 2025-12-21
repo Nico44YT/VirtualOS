@@ -1,0 +1,4 @@
+---@type System
+---@type File
+---@type Directory
+---@type Node

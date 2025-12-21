@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'nico'
+version = '1.0-SNAPSHOT'
+
+application {
+    mainClass = "nico.virtualos.test.Main"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation 'org.luaj:luaj-jse:3.0.1'
+
+    implementation "org.reflections:reflections:${project.reflections_version}"
+    implementation "org.javassist:javassist:${project.javassist_version}"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': application.mainClass
+        )
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-parameters']
+}
+
+tasks.register('runSkipBoot', JavaExec) {
+    group = "application"
+    description = "Runs the app with -skipboot"
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set(application.mainClass)
+
+    args "-skipboot"
+}
+
+tasks.register('generateLuaStubs', JavaExec) {
+    group = "ide"
+    description = "Generate EmmyLua IDE stubs"
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'nico.virtualos.lua.stub.LuaStubGenerator'
+}

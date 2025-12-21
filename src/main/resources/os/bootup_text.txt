@@ -1,0 +1,34 @@
+VirtualOS BIOS v1.3.7
+Copyright (C) Ikahra Systems Inc.
+
+Initializing system core...
+[ OK ] CPU: Virtual Core x1 @ 3.20MHz
+[ OK ] Memory Manager initialized (64 KB)
+[ OK ] Interrupt table loaded
+[ OK ] I/O bus online
+
+Mounting filesystems...
+[ OK ] vfs0 mounted at /
+[ OK ] vfs1 mounted at /home
+[ OK ] Permissions verified
+
+Loading kernel modules...
+[ OK ] scheduler.mod
+[ OK ] shell.mod
+[ OK ] lua_runtime.mod
+[ OK ] audio.mod
+[ OK ] input.mod
+
+Starting system services...
+[ OK ] Process Manager
+[ OK ] Virtual Clock
+[ OK ] Lua Execution Engine
+[ OK ] Terminal Interface
+
+Performing system checks...
+[ OK ] Filesystem integrity
+[ OK ] Memory scan
+[ OK ] Startup scripts
+
+Handing off to userland...
+Launching startup.lua
